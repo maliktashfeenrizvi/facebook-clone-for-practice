@@ -1,0 +1,713 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facebook Clone</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f0f2f5;
+      color: #050505;
+    }
+
+    /* Navbar */
+    .navbar {
+      height: 60px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1877f2;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search {
+      background: #f0f2f5;
+      border-radius: 20px;
+      padding: 10px 15px;
+      width: 230px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 45px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .nav-icon {
+      font-size: 25px;
+      color: #65676b;
+      cursor: pointer;
+      padding: 17px 25px;
+    }
+
+    .nav-icon:hover {
+      color: #1877f2;
+      background: #f0f2f5;
+      border-radius: 8px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .circle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e4e6eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1400px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .profile img,
+    .post-header img,
+    .contact img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile span {
+      font-weight: bold;
+    }
+
+    .side-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .side-item:hover {
+      background: #e4e6eb;
+    }
+
+    .side-icon {
+      font-size: 24px;
+      width: 30px;
+      text-align: center;
+    }
+
+    /* Main */
+    .main {
+      max-width: 650px;
+      width: 100%;
+      margin: auto;
+    }
+
+    /* Stories */
+    .stories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 18px;
+    }
+
+    .story {
+      min-width: 110px;
+      height: 190px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      background: #ddd;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+
+    .story img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 50%, rgba(0,0,0,.7));
+    }
+
+    .story-name {
+      position: absolute;
+      bottom: 10px;
+      left: 8px;
+      color: white;
+      font-weight: bold;
+      z-index: 2;
+      font-size: 13px;
+    }
+
+    .story-avatar {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 38px !important;
+      height: 38px !important;
+      border: 3px solid #1877f2;
+      z-index: 3;
+      border-radius: 50%;
+    }
+
+    /* Card */
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    }
+
+    /* Create post */
+    .create-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .create-top img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+    }
+
+    .post-input {
+      background: #f0f2f5;
+      border: none;
+      outline: none;
+      border-radius: 25px;
+      padding: 12px 18px;
+      flex: 1;
+      font-size: 15px;
+    }
+
+    .post-options {
+      display: flex;
+      border-top: 1px solid #ddd;
+      margin-top: 15px;
+      padding-top: 10px;
+      justify-content: space-around;
+    }
+
+    .post-option {
+      padding: 10px;
+      flex: 1;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #65676b;
+    }
+
+    .post-option:hover {
+      background: #f0f2f5;
+    }
+
+    /* Posts */
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-info {
+      flex: 1;
+    }
+
+    .post-info h3 {
+      font-size: 15px;
+    }
+
+    .post-info p {
+      font-size: 12px;
+      color: #65676b;
+      margin-top: 3px;
+    }
+
+    .more {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .post-text {
+      margin: 15px 0;
+      line-height: 1.5;
+    }
+
+    .post-image {
+      width: calc(100% + 30px);
+      margin-left: -15px;
+      max-height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .reactions {
+      display: flex;
+      justify-content: space-between;
+      color: #65676b;
+      font-size: 14px;
+      padding: 10px 0;
+    }
+
+    .post-buttons {
+      border-top: 1px solid #ddd;
+      display: flex;
+      padding-top: 5px;
+    }
+
+    .post-btn {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      color: #65676b;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .post-btn:hover {
+      background: #f0f2f5;
+    }
+
+    /* Right sidebar */
+    .right-sidebar {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .right-title {
+      color: #65676b;
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+
+    .contact {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .contact:hover {
+      background: #e4e6eb;
+    }
+
+    .online {
+      position: relative;
+    }
+
+    .online::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #31a24c;
+      border: 2px solid white;
+      border-radius: 50%;
+      bottom: 0;
+      right: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .container {
+        grid-template-columns: 80px 1fr;
+      }
+
+      .right-sidebar {
+        display: none;
+      }
+
+      .side-item span {
+        display: none;
+      }
+
+      .profile span {
+        display: none;
+      }
+
+      .profile {
+        justify-content: center;
+      }
+
+      .nav-center {
+        gap: 5px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 0 8px;
+      }
+
+      .search {
+        display: none;
+      }
+
+      .nav-center {
+        display: none;
+      }
+
+      .nav-left {
+        flex: 1;
+      }
+
+      .container {
+        display: block;
+        padding: 10px;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        max-width: 100%;
+      }
+
+      .story {
+        min-width: 100px;
+        height: 170px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+
+    <div class="nav-left">
+      <div class="logo">f</div>
+      <input class="search" type="text" placeholder="Search Facebook">
+    </div>
+
+    <div class="nav-center">
+      <div class="nav-icon">⌂</div>
+      <div class="nav-icon">▶</div>
+      <div class="nav-icon">🛒</div>
+      <div class="nav-icon">👥</div>
+    </div>
+
+    <div class="nav-right">
+      <div class="circle-btn">☰</div>
+      <div class="circle-btn">💬</div>
+      <div class="circle-btn">🔔</div>
+      <div class="circle-btn">👤</div>
+    </div>
+
+  </nav>
+
+  <div class="container">
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+
+      <div class="profile">
+        <img src="https://i.pravatar.cc/100?img=12">
+        <span>John Doe</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">👥</div>
+        <span>Friends</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">🕐</div>
+        <span>Memories</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">🔖</div>
+        <span>Saved</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">👨‍👩‍👧</div>
+        <span>Groups</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">🛒</div>
+        <span>Marketplace</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">📺</div>
+        <span>Video</span>
+      </div>
+
+      <div class="side-item">
+        <div class="side-icon">⬇️</div>
+        <span>See More</span>
+      </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Stories -->
+      <div class="stories">
+
+        <div class="story">
+          <img src="https://picsum.photos/300/500?random=1">
+          <img class="story-avatar" src="https://i.pravatar.cc/100?img=12">
+          <div class="story-name">Your Story</div>
+        </div>
+
+        <div class="story">
+          <img src="https://picsum.photos/300/500?random=2">
+          <img class="story-avatar" src="https://i.pravatar.cc/100?img=5">
+          <div class="story-name">Sarah</div>
+        </div>
+
+        <div class="story">
+          <img src="https://picsum.photos/300/500?random=3">
+          <img class="story-avatar" src="https://i.pravatar.cc/100?img=8">
+          <div class="story-name">Michael</div>
+        </div>
+
+        <div class="story">
+          <img src="https://picsum.photos/300/500?random=4">
+          <img class="story-avatar" src="https://i.pravatar.cc/100?img=9">
+          <div class="story-name">Emma</div>
+        </div>
+
+        <div class="story">
+          <img src="https://picsum.photos/300/500?random=5">
+          <img class="story-avatar" src="https://i.pravatar.cc/100?img=11">
+          <div class="story-name">David</div>
+        </div>
+
+      </div>
+
+      <!-- Create Post -->
+      <div class="card">
+
+        <div class="create-top">
+          <img src="https://i.pravatar.cc/100?img=12">
+          <input
+            class="post-input"
+            type="text"
+            placeholder="What's on your mind, John?"
+          >
+        </div>
+
+        <div class="post-options">
+          <div class="post-option">🔴 Live Video</div>
+          <div class="post-option">🖼️ Photo/Video</div>
+          <div class="post-option">😊 Feeling</div>
+        </div>
+
+      </div>
+
+      <!-- Post 1 -->
+      <article class="card">
+
+        <div class="post-header">
+          <img src="https://i.pravatar.cc/100?img=5">
+
+          <div class="post-info">
+            <h3>Sarah Williams</h3>
+            <p>2 hrs · 🌎</p>
+          </div>
+
+          <div class="more">•••</div>
+        </div>
+
+        <div class="post-text">
+          Beautiful day to explore new places! 🌄
+          Sometimes all you need is a little adventure.
+        </div>
+
+        <img
+          class="post-image"
+          src="https://picsum.photos/800/500?random=20"
+          alt="Post image"
+        >
+
+        <div class="reactions">
+          <span>👍 ❤️ 😆 &nbsp; 1.2K</span>
+          <span>120 comments · 45 shares</span>
+        </div>
+
+        <div class="post-buttons">
+          <div class="post-btn">👍 Like</div>
+          <div class="post-btn">💬 Comment</div>
+          <div class="post-btn">↗ Share</div>
+        </div>
+
+      </article>
+
+      <!-- Post 2 -->
+      <article class="card">
+
+        <div class="post-header">
+          <img src="https://i.pravatar.cc/100?img=8">
+
+          <div class="post-info">
+            <h3>Michael Brown</h3>
+            <p>5 hrs · 🌎</p>
+          </div>
+
+          <div class="more">•••</div>
+        </div>
+
+        <div class="post-text">
+          Coffee + coding = perfect morning ☕💻
+        </div>
+
+        <img
+          class="post-image"
+          src="https://picsum.photos/800/500?random=21"
+          alt="Coffee and coding"
+        >
+
+        <div class="reactions">
+          <span>👍 ❤️ &nbsp; 532</span>
+          <span>64 comments · 12 shares</span>
+        </div>
+
+        <div class="post-buttons">
+          <div class="post-btn">👍 Like</div>
+          <div class="post-btn">💬 Comment</div>
+          <div class="post-btn">↗ Share</div>
+        </div>
+
+      </article>
+
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="right-sidebar">
+
+      <h3 class="right-title">Sponsored</h3>
+
+      <div class="contact">
+        <img src="https://picsum.photos/100/100?random=30">
+        <span>Learn Web Development</span>
+      </div>
+
+      <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
+
+      <h3 class="right-title">Contacts</h3>
+
+      <div class="contact">
+        <div class="online">
+          <img src="https://i.pravatar.cc/100?img=3">
+        </div>
+        <span>Alex Johnson</span>
+      </div>
+
+      <div class="contact">
+        <div class="online">
+          <img src="https://i.pravatar.cc/100?img=6">
+        </div>
+        <span>Emily Davis</span>
+      </div>
+
+      <div class="contact">
+        <div class="online">
+          <img src="https://i.pravatar.cc/100?img=7">
+        </div>
+        <span>James Wilson</span>
+      </div>
+
+      <div class="contact">
+        <div class="online">
+          <img src="https://i.pravatar.cc/100?img=10">
+        </div>
+        <span>Olivia Smith</span>
+      </div>
+
+      <div class="contact">
+        <div class="online">
+          <img src="https://i.pravatar.cc/100?img=13">
+        </div>
+        <span>Daniel Taylor</span>
+      </div>
+
+    </aside>
+
+  </div>
+
+</body>
+</html>
+```
+
